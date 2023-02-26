@@ -11,9 +11,9 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./src/page-template.js");
 
 
-// TODO: Write Code to gather information about the development team members, and render the HTML file.
-
-const myArrayOfTeamMembers = []
+//Write Code to gather information about the development team members, and render the HTML file.
+//empty array
+const teamMembers = []
 
 //Manager Prompt
 
@@ -42,7 +42,7 @@ inquirer.prompt([
 ])
     .then(response => {
         const manager = new Manager(response.name, response.id, response.email, response.officeNum)
-        myArrayOfTeamMembers.push(manager);
+        teamMembers.push(manager);
         promptForNextEmployee()
     })
 
@@ -62,7 +62,7 @@ const promptForNextEmployee = () => {
             } else if (response.memberAdd === 'Intern') {
                 promptForIntern();
             } else {
-                fs.writeFile(outputPath, render(myArrayOfTeamMembers, (err) => (err ? console.error(err) : console.log('Successfully wrote to team.html'))))
+                fs.writeFile(outputPath, render(teamMembers), (err) => err ? console.error(err) : console.log('Successfully wrote to team.html'));
             }
         })
 }
@@ -92,7 +92,7 @@ const promptForEngineer = () => {
         },
     ]).then(response => {
         const engineer = new Engineer(response.name, response.id, response.email, response.github)
-        myArrayOfTeamMembers.push(engineer);
+        teamMembers.push(engineer);
         promptForNextEmployee();
     })
 }
@@ -122,7 +122,7 @@ const promptForIntern = () => {
         },
     ]).then(response => {
         const intern = new Intern(response.name, response.id, response.email, response.school)
-        myArrayOfTeamMembers.push(intern);
+        teamMembers.push(intern);
         promptForNextEmployee();
     })
 }
