@@ -56,9 +56,9 @@ const promptForNextEmployee = () => {
         },
     ])
         .then(response => {
-            if (response.memberAdd === 'Engineer') {
+            if (response.memberAdd === 'Add Engineer') {
                 promptForEngineer();
-            } else if (response.memberAdd === 'Intern') {
+            } else if (response.memberAdd === 'Add Intern') {
                 promptForIntern();
             } else {
                 fs.writeFile(outputPath, render(teamMembers), (err) => err ? console.error(err) : console.log('Successfully wrote to team.html'));
