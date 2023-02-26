@@ -7,16 +7,15 @@ const fs = require("fs");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
-
+//Variable to render the page template js file
 const render = require("./src/page-template.js");
 
 
-//Write Code to gather information about the development team members, and render the HTML file.
-//empty array
+// Code to gather information about the development team members, and render the HTML file.
+// empty array to collect information about the team members
 const teamMembers = []
 
-//Manager Prompt
-
+//Manager Prompt, always the first questions
 inquirer.prompt([
     {
         //manager questions
@@ -45,7 +44,7 @@ inquirer.prompt([
         teamMembers.push(manager);
         promptForNextEmployee()
     })
-
+// Promp for the next employee; engineer, intern or write to file if no more needed
 const promptForNextEmployee = () => {
     inquirer.prompt([
         // choice of 3
@@ -53,7 +52,7 @@ const promptForNextEmployee = () => {
             type: 'list',
             message: 'What type of team member would you like to add?',
             name: 'memberAdd',
-            choices: ['Manager', 'Engineer', 'Intern', 'I dont want to add any more Team members'],
+            choices: ['Add Engineer', 'Add Intern', 'Finish Building the Team'],
         },
     ])
         .then(response => {
@@ -66,7 +65,7 @@ const promptForNextEmployee = () => {
             }
         })
 }
-
+// Engineer prompt
 const promptForEngineer = () => {
     inquirer.prompt([
         //engineer questions
@@ -87,7 +86,7 @@ const promptForEngineer = () => {
         },
         {
             type: 'input',
-            message: 'What is your Engineers github username?',
+            message: 'What is your Engineers Github username?',
             name: 'github',
         },
     ]).then(response => {
@@ -96,7 +95,7 @@ const promptForEngineer = () => {
         promptForNextEmployee();
     })
 }
-
+// Intern propmt
 const promptForIntern = () => {
     inquirer.prompt([
         //intern questions
