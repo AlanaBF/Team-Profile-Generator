@@ -13,10 +13,10 @@ const render = require("./src/page-template.js");
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
 
-//somewhere in the code I will need to call this:
-//render(myArrayOfTeamMembers)
+const myArrayOfTeamMembers = []
 
 //Manager Prompt
+
 inquirer.prompt([
     {
         //manager questions
@@ -41,7 +41,8 @@ inquirer.prompt([
     },
 ])
     .then(response => {
-        //generateManager();
+        const manager = new Manager(response.name, response.id, response.email, response.officeNum)
+        myArrayOfTeamMembers.push(manager);
         promptForNextEmployee()
     })
 
@@ -56,48 +57,50 @@ const promptForNextEmployee = () => {
         },
     ])
         .then(response => {
-            if (Engineer) {
-                promptForEngineer()
-            } else if (Intern) {
+            if (response.memberAdd === 'Engineer') {
+                promptForEngineer();
+            } else if (response.memberAdd === 'Intern') {
                 promptForIntern();
-            } else
-                generateTeam() //    use the functionality from page-template to generate the team
+            } else {
+                fs.writeFile(outputPath, render(myArrayOfTeamMembers, (err) => (err ? console.error(err) : console.log('Successfully wrote to team.html'))))
+            }
         })
-    }
+}
 
-    const promptForEngineer = () => {
-        inquirer.prompt([
-            //engineer questions
-            {
-                type: 'input',
-                message: 'What is your Engineers Name?',
-                name: 'name',
-            },
-            {
-                type: 'input',
-                message: 'What is your Engineers Id?',
-                name: 'id',
-            },
-            {
-                type: 'input',
-                message: 'What is your Engineers email?',
-                name: 'email',
-            },
-            {
-                type: 'input',
-                message: 'What is your Engineers github username?',
-                name: 'github',
-            },
-        ]).then(response => {
-            // add new engineer to employees array
-            promptForNextEmployee();
-        })
-    }
+const promptForEngineer = () => {
+    inquirer.prompt([
+        //engineer questions
+        {
+            type: 'input',
+            message: 'What is your Engineers Name?',
+            name: 'name',
+        },
+        {
+            type: 'input',
+            message: 'What is your Engineers Id?',
+            name: 'id',
+        },
+        {
+            type: 'input',
+            message: 'What is your Engineers email?',
+            name: 'email',
+        },
+        {
+            type: 'input',
+            message: 'What is your Engineers github username?',
+            name: 'github',
+        },
+    ]).then(response => {
+        const engineer = new Engineer(response.name, response.id, response.email, response.github)
+        myArrayOfTeamMembers.push(engineer);
+        promptForNextEmployee();
+    })
+}
 
-    const promptForIntern = () => {
-        inquirer.prompt([
-            //intern questions
-            {
+const promptForIntern = () => {
+    inquirer.prompt([
+        //intern questions
+        {
             type: 'input',
             message: 'What is your Interns Name?',
             name: 'name',
@@ -117,18 +120,9 @@ const promptForNextEmployee = () => {
             message: 'What is your Interns school?',
             name: 'school',
         },
-        ]).then(response => {
-            // add new intern to employees array
-            promptForNextEmployee();
-        })
-    }
-
-    const buildPage = (response) => {
-         render(team)
-    
-// Calls for the file to be written to the html based on those responses
-//  .then((response) => {
-//         fs.writeFile('team.html'),
-//             (err) => (err ? console.error(err) : console.log('Successfully wrote to team.html'))
-//     })
+    ]).then(response => {
+        const intern = new Intern(response.name, response.id, response.email, response.school)
+        myArrayOfTeamMembers.push(intern);
+        promptForNextEmployee();
+    })
 }
