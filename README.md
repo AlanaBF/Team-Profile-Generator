@@ -32,7 +32,9 @@ Using Object-Orientated Programming, this application converts starter code into
 ## User Story
 
 ```
-As a manager or a user I want to generate a webpage that displays my team's basic info so that I or a user has quick access to their emails and GitHub profiles.
+AS A manager 
+I WANT to generate a webpage that displays my team's basic info 
+SO THAT I have quick access to their emails and GitHub profiles.
 ```
 
 ## Installation
